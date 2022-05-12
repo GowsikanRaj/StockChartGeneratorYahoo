@@ -4,7 +4,7 @@ import SearchBar from "./SearchBar";
 import Graph from "./Graph";
 import Watchlist from "./Watchlist";
 
-const API_KEY = process.env.REACT_APP_KEY;
+const API_KEY = process.env.REACT_APP_API_KEY;
 
 const App = () => {
   const [stock, setStock] = useState("AAPL");
