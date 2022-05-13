@@ -99,7 +99,7 @@ const App = () => {
       setYValues([...y]);
     };
 
-    if (stock) {
+    if (stock && xValues.length) {
       search();
     } else {
       const timeoutId = setTimeout(() => {
