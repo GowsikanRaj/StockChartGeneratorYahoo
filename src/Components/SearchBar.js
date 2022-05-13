@@ -6,7 +6,7 @@ class SearchBar extends Component {
   render() {
     const { stock, changeStock } = this.props;
     return (
-      <div className="ui form">
+      <div className="ui form" style={{ marginLeft: "2vw" }}>
         <div className="fields">
           <div className="thirteen wide field">
             <label>Enter Stock Name </label>
