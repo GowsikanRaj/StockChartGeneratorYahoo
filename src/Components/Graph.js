@@ -45,7 +45,7 @@ const Graph = ({ data, stock, timeInterval }) => {
           1y
         </button>
       </div>
-      <LineChart width={500} height={500} data={data}>
+      <LineChart width={"50vw"} height={"50vh"} data={data}>
         <Line
           type="monotone"
           dataKey="stockValues"
