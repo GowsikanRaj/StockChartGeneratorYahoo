@@ -15,8 +15,6 @@ const App = () => {
 
   useEffect(() => {
     const search = async () => {
-      console.log(range);
-      console.log(interval);
       const data = await axios
         .get(`https://yfapi.net/v8/finance/chart/${stock}`, {
           params: {
@@ -32,8 +30,6 @@ const App = () => {
         .then((response) =>
           JSON.parse(JSON.stringify(response.data.chart.result[0]))
         );
-
-      console.log(data);
       let x = [];
       let y = [];
       for (let i = 0; i <= data["timestamp"].length; i++) {
