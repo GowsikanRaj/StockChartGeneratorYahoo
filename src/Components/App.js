@@ -95,14 +95,14 @@ const App = () => {
       setYValues([...y]);
     };
 
-    if (stock && xValues.length) {
+    if (stock && !xValues.length) {
       search();
     } else {
       const timeoutId = setTimeout(() => {
         if (stock) {
           search();
         }
-      }, 500);
+      }, 3000);
 
       return () => {
         clearTimeout(timeoutId);
