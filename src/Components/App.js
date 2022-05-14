@@ -14,87 +14,6 @@ const App = () => {
   const [interval, setInterval] = useState("1d");
 
   useEffect(() => {
-    const search = async () => {
-      const data = await axios
-        .get(`https://yfapi.net/v8/finance/chart/${stock}`, {
-          params: {
-            range: range,
-            region: "US",
-            interval: interval,
-            lang: "en",
-          },
-          headers: {
-            "x-api-key": API_KEY,
-          },
-        })
-        .then((response) =>
-          JSON.parse(JSON.stringify(response.data.chart.result[0]))
-        );
-      let x = [];
-      let y = [];
-      for (let i = 0; i <= data["timestamp"].length; i++) {
-        if (
-          range === "1y" ||
-          range === "6mo" ||
-          range === "3mo" ||
-          range === "1mo"
-        ) {
-          let date =
-            String(new Date(data["timestamp"][i] * 1000).getFullYear()) +
-            "-" +
-            String(
-              new Date(data["timestamp"][i] * 1000).getMonth() + 1
-            ).padStart(2, "0") +
-            "-" +
-            String(new Date(data["timestamp"][i] * 1000).getDate()).padStart(
-              2,
-              "0"
-            );
-
-          x.push(date);
-        } else if (range === "1d") {
-          let date =
-            String(new Date(data["timestamp"][i] * 1000).getHours()) +
-            ":" +
-            String(new Date(data["timestamp"][i] * 1000).getMinutes()).padStart(
-              2,
-              "0"
-            );
-
-          x.push(date);
-        } else if (range === "5d") {
-          let date =
-            String(new Date(data["timestamp"][i] * 1000).getFullYear()) +
-            "-" +
-            String(
-              new Date(data["timestamp"][i] * 1000).getMonth() + 1
-            ).padStart(2, "0") +
-            "-" +
-            String(new Date(data["timestamp"][i] * 1000).getDate()).padStart(
-              2,
-              "0"
-            ) +
-            " " +
-            String(new Date(data["timestamp"][i] * 1000).getHours()) +
-            ":" +
-            String(new Date(data["timestamp"][i] * 1000).getMinutes()).padStart(
-              2,
-              "0"
-            );
-
-          x.push(date);
-        }
-
-        y.push(Number(data["indicators"]["quote"][0]["close"][i]).toFixed(2));
-      }
-
-      x.pop();
-      y.pop();
-
-      setXValues([...x]);
-      setYValues([...y]);
-    };
-
     if (stock && !xValues.length) {
       search();
     } else {
@@ -102,13 +21,98 @@ const App = () => {
         if (stock) {
           search();
         }
-      }, 3000);
+      }, 500);
 
       return () => {
         clearTimeout(timeoutId);
       };
     }
   }, [stock, range, interval]);
+
+  const search = async () => {
+    const data = await axios
+      .get(`https://yfapi.net/v8/finance/chart/${stock}`, {
+        params: {
+          range: range,
+          region: "US",
+          interval: interval,
+          lang: "en",
+        },
+        headers: {
+          "x-api-key": API_KEY,
+        },
+      })
+      .then((response) =>
+        JSON.parse(JSON.stringify(response.data.chart.result[0]))
+      );
+
+    let x = [];
+    let y = [];
+
+    for (let i = 0; i <= data["timestamp"].length; i++) {
+      if (
+        range === "1y" ||
+        range === "6mo" ||
+        range === "3mo" ||
+        range === "1mo"
+      ) {
+        let date =
+          String(new Date(data["timestamp"][i] * 1000).getFullYear()) +
+          "-" +
+          String(new Date(data["timestamp"][i] * 1000).getMonth() + 1).padStart(
+            2,
+            "0"
+          ) +
+          "-" +
+          String(new Date(data["timestamp"][i] * 1000).getDate()).padStart(
+            2,
+            "0"
+          );
+
+        x.push(date);
+      } else if (range === "1d") {
+        let date =
+          String(new Date(data["timestamp"][i] * 1000).getHours()) +
+          ":" +
+          String(new Date(data["timestamp"][i] * 1000).getMinutes()).padStart(
+            2,
+            "0"
+          );
+
+        x.push(date);
+      } else if (range === "5d") {
+        let date =
+          String(new Date(data["timestamp"][i] * 1000).getFullYear()) +
+          "-" +
+          String(new Date(data["timestamp"][i] * 1000).getMonth() + 1).padStart(
+            2,
+            "0"
+          ) +
+          "-" +
+          String(new Date(data["timestamp"][i] * 1000).getDate()).padStart(
+            2,
+            "0"
+          ) +
+          " " +
+          String(new Date(data["timestamp"][i] * 1000).getHours()) +
+          ":" +
+          String(new Date(data["timestamp"][i] * 1000).getMinutes()).padStart(
+            2,
+            "0"
+          );
+
+        x.push(date);
+      }
+
+      y.push(Number(data["indicators"]["quote"][0]["close"][i]).toFixed(2));
+    }
+
+    x.pop();
+    y.pop();
+
+    setXValues([...x]);
+    setYValues([...y]);
+  };
 
   const data = xValues.map((x, index) => ({
     name: x,
