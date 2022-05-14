@@ -2,12 +2,6 @@ import React from "react";
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Legend } from "recharts";
 
 const Graph = ({ data, stock, timeInterval }) => {
-  const yValues = data.map((y) => y["stockValues"]);
-  const yAxisRange = yValues.sort(function (a, b) {
-    return a - b;
-  });
-  const yMin = yAxisRange[0];
-  const yMax = yAxisRange[yValues.length - 1];
   return (
     <>
       <h3 style={{ display: "flex", justifyContent: "center" }}>
@@ -62,7 +56,7 @@ const Graph = ({ data, stock, timeInterval }) => {
         />
         <CartesianGrid stroke="#ccc" />
         <XAxis dataKey="name" />
-        <YAxis type="number" domain={[yMin, yMax]} />
+        <YAxis type="number" />
         <Legend />
       </LineChart>
     </>
