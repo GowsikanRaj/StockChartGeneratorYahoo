@@ -114,11 +114,6 @@ const App = () => {
     setYValues([...y]);
   };
 
-  const data = xValues.map((x, index) => ({
-    name: x,
-    stockValues: yValues[index],
-  }));
-
   const changeStock = (value) => {
     setStock(value);
   };
@@ -130,14 +125,19 @@ const App = () => {
 
   return (
     <>
-      <div className="ui center aligned header" style={{ margin: "10px" }}>
+      <div className="ui center aligned header" style={{ margin: "20px" }}>
         <h1 className="ui block header">Stock Chart Generator</h1>
       </div>
       <div className="ui grid" style={{ margin: "10px" }}>
         <div className="fourteen wide stretched centered column">
           <SearchBar stock={stock} changeStock={changeStock} />
           <div className="ui center aligned field">
-            <Graph stock={stock} data={data} timeInterval={timeInterval} />
+            <Graph
+              stock={stock}
+              xValues={xValues}
+              yValues={yValues}
+              timeInterval={timeInterval}
+            />
           </div>
         </div>
         <div className="two wide column">
