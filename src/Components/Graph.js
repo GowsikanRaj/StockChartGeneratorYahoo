@@ -15,17 +15,9 @@ const Graph = ({
   twoHundredSMA,
   stock,
   timeInterval,
+  rsi,
+  getRSI,
 }) => {
-  const xMin = xValues[0];
-  const xMax = xValues[xValues.length - 1];
-
-  const y = yValues.map((y) => y);
-  const yAxisRange = y.sort(function (a, b) {
-    return a - b;
-  });
-  const yMin = yAxisRange[0];
-  const yMax = yAxisRange[yValues.length - 1];
-
   const data = xValues.map((item, index) => ({
     name: item,
     stockValues: yValues[index],
@@ -36,6 +28,13 @@ const Graph = ({
     fiftySMA: fiftySMA[index],
     hundredSMA: hundredSMA[index],
     twoHundredSMA: twoHundredSMA[index],
+  }));
+
+  const rsiData = xValues.map((item, index) => ({
+    name: item,
+    rsiValues: rsi[index],
+    overSold: 30,
+    overBought: 70,
   }));
 
   return (
@@ -81,6 +80,40 @@ const Graph = ({
           1y
         </button>
       </div>
+      {rsi.length !== 0 ? (
+        <LineChart
+          width={1500}
+          height={150}
+          data={rsiData}
+          style={{ backgroundColor: "black" }}
+        >
+          <Line
+            type="monotone"
+            dataKey="rsiValues"
+            stroke="purple"
+            strokeWidth={2}
+            dot={false}
+          />
+          <Line
+            type="monotone"
+            dataKey="overSold"
+            stroke="green"
+            strokeWidth={2}
+            dot={false}
+          />
+          <Line
+            type="monotone"
+            dataKey="overBought"
+            stroke="red"
+            strokeWidth={2}
+            dot={false}
+          />
+          <YAxis type="number" />
+        </LineChart>
+      ) : (
+        ""
+      )}
+
       <LineChart
         width={1500}
         height={750}
@@ -92,7 +125,7 @@ const Graph = ({
           dataKey="stockValues"
           name={stock}
           stroke="blue"
-          strokeWidth={1}
+          strokeWidth={2}
           dot={false}
         />
         {twentyOneEMA.length !== 0 ? (
@@ -101,7 +134,7 @@ const Graph = ({
             dataKey="twentyOneEMA"
             name="21 EMA"
             stroke="white"
-            strokeWidth={1}
+            strokeWidth={2}
             dot={false}
           />
         ) : (
@@ -113,7 +146,7 @@ const Graph = ({
             dataKey="fiftyEMA"
             name="50 EMA"
             stroke="red"
-            strokeWidth={1}
+            strokeWidth={2}
             dot={false}
           />
         ) : (
@@ -125,7 +158,7 @@ const Graph = ({
             dataKey="hundredEMA"
             name="100 EMA"
             stroke="yellow"
-            strokeWidth={1}
+            strokeWidth={2}
             dot={false}
           />
         ) : (
@@ -137,7 +170,7 @@ const Graph = ({
             dataKey="twoHundredEMA"
             name="200 EMA"
             stroke="purple"
-            strokeWidth={1}
+            strokeWidth={2}
             dot={false}
           />
         ) : (
@@ -149,7 +182,7 @@ const Graph = ({
             dataKey="fiftySMA"
             name="50 SMA"
             stroke="green"
-            strokeWidth={1}
+            strokeWidth={2}
             dot={false}
           />
         ) : (
@@ -161,7 +194,7 @@ const Graph = ({
             dataKey="hundredSMA"
             name="100 SMA"
             stroke="orange"
-            strokeWidth={1}
+            strokeWidth={2}
             dot={false}
           />
         ) : (
@@ -173,7 +206,7 @@ const Graph = ({
             dataKey="twoHundredSMA"
             name="200 SMA"
             stroke="pink"
-            strokeWidth={1}
+            strokeWidth={2}
             dot={false}
           />
         ) : (
@@ -181,10 +214,11 @@ const Graph = ({
         )}
 
         <CartesianGrid stroke="#ccc" />
-        <XAxis dataKey="name" domain={[xMin, xMax]} />
-        <YAxis type="number" domain={[yMin, yMax]} />
+        <XAxis dataKey="name" />
+        <YAxis type="number" />
         <Legend />
       </LineChart>
+
       <div className="row" style={{ marginTop: "2vh" }}>
         <button className="ui button" onClick={() => getEMA(21)}>
           Add 21 EMA
@@ -206,6 +240,9 @@ const Graph = ({
         </button>
         <button className="ui button" onClick={() => getSMA(200)}>
           Add 200 SMA
+        </button>
+        <button className="ui button" onClick={() => getRSI()}>
+          Add RSI
         </button>
       </div>
     </>

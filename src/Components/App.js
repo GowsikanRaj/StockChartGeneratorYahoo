@@ -7,10 +7,10 @@ import Watchlist from "./Watchlist";
 const API_KEY = process.env.REACT_APP_API_KEY;
 
 const App = () => {
-  const [stock, setStock] = useState("AAPL");
+  const [stock, setStock] = useState("AMZN");
   const [xValues, setXValues] = useState([]);
   const [yValues, setYValues] = useState([]);
-  const [range, setRange] = useState(365);
+  const [range, setRange] = useState(253);
   const [interval, setInterval] = useState("1day");
   const [twentyOneEMA, setTwentyOneEMA] = useState([]);
   const [fiftyEMA, setFiftyEMA] = useState([]);
@@ -19,14 +19,63 @@ const App = () => {
   const [fiftySMA, setFiftySMA] = useState([]);
   const [hundredSMA, setHundredSMA] = useState([]);
   const [twoHundredSMA, setTwoHundredSMA] = useState([]);
+  const [RSI, setRSI] = useState([]);
 
   useEffect(() => {
     if (stock && !xValues.length) {
       search();
+      if (twentyOneEMA.length !== 0) {
+        getEMA(21);
+      }
+      if (fiftyEMA.length !== 0) {
+        getEMA(50);
+      }
+      if (hundredEMA.length !== 0) {
+        getEMA(100);
+      }
+      if (twoHundredEMA.length !== 0) {
+        getEMA(200);
+      }
+      if (fiftySMA.length !== 0) {
+        getSMA(50);
+      }
+      if (hundredSMA.length !== 0) {
+        getSMA(100);
+      }
+      if (twoHundredSMA.length !== 0) {
+        getSMA(200);
+      }
+      if (RSI.length !== 0) {
+        getRSI();
+      }
     } else {
       const timeoutId = setTimeout(() => {
         if (stock) {
           search();
+          if (twentyOneEMA.length !== 0) {
+            getEMA(21);
+          }
+          if (fiftyEMA.length !== 0) {
+            getEMA(50);
+          }
+          if (hundredEMA.length !== 0) {
+            getEMA(100);
+          }
+          if (twoHundredEMA.length !== 0) {
+            getEMA(200);
+          }
+          if (fiftySMA.length !== 0) {
+            getSMA(50);
+          }
+          if (hundredSMA.length !== 0) {
+            getSMA(100);
+          }
+          if (twoHundredSMA.length !== 0) {
+            getSMA(200);
+          }
+          if (RSI.length !== 0) {
+            getRSI();
+          }
         }
       }, 500);
 
@@ -37,6 +86,14 @@ const App = () => {
   }, [stock, range, interval]);
 
   const search = async () => {
+    setTwentyOneEMA([]);
+    setFiftyEMA([]);
+    setHundredEMA([]);
+    setTwoHundredEMA([]);
+    setFiftySMA([]);
+    setHundredSMA([]);
+    setTwoHundredSMA([]);
+    setRSI([]);
     const data = await axios
       .get(`https://api.twelvedata.com/time_series`, {
         params: {
@@ -114,6 +171,23 @@ const App = () => {
     }
   };
 
+  const getRSI = async () => {
+    const data = await axios
+      .get(`https://api.twelvedata.com/rsi`, {
+        params: {
+          symbol: stock,
+          interval: interval,
+          apikey: API_KEY,
+          outputsize: range,
+          time_period: 14,
+        },
+      })
+      .then((response) => JSON.parse(JSON.stringify(response.data.values)));
+
+    let values = data.map((item) => item["rsi"]);
+    setRSI(values.reverse());
+  };
+
   return (
     <>
       <div className="ui center aligned header" style={{ margin: "20px" }}>
@@ -137,6 +211,8 @@ const App = () => {
               hundredSMA={hundredSMA}
               twoHundredSMA={twoHundredSMA}
               timeInterval={timeInterval}
+              rsi={RSI}
+              getRSI={getRSI}
             />
           </div>
         </div>
