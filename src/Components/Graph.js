@@ -1,7 +1,21 @@
 import React from "react";
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Legend } from "recharts";
 
-const Graph = ({ xValues, yValues, stock, timeInterval }) => {
+const Graph = ({
+  xValues,
+  yValues,
+  getEMA,
+  getSMA,
+  twentyOneEMA,
+  fiftyEMA,
+  hundredEMA,
+  twoHundredEMA,
+  fiftySMA,
+  hundredSMA,
+  twoHundredSMA,
+  stock,
+  timeInterval,
+}) => {
   const xMin = xValues[0];
   const xMax = xValues[xValues.length - 1];
 
@@ -15,6 +29,13 @@ const Graph = ({ xValues, yValues, stock, timeInterval }) => {
   const data = xValues.map((item, index) => ({
     name: item,
     stockValues: yValues[index],
+    twentyOneEMA: twentyOneEMA[index],
+    fiftyEMA: fiftyEMA[index],
+    hundredEMA: hundredEMA[index],
+    twoHundredEMA: twoHundredEMA[index],
+    fiftySMA: fiftySMA[index],
+    hundredSMA: hundredSMA[index],
+    twoHundredSMA: twoHundredSMA[index],
   }));
 
   return (
@@ -22,7 +43,7 @@ const Graph = ({ xValues, yValues, stock, timeInterval }) => {
       <h3 style={{ display: "flex", justifyContent: "center" }}>
         Stock Chart for {String(stock).toUpperCase()}
       </h3>
-      <div style={{ marginLeft: "3vw" }}>
+      <div style={{ marginBottom: "2vh" }}>
         <button
           className="ui tiny button"
           onClick={() => timeInterval(390, "1min")}
@@ -60,7 +81,12 @@ const Graph = ({ xValues, yValues, stock, timeInterval }) => {
           1y
         </button>
       </div>
-      <LineChart width={1500} height={750} data={data}>
+      <LineChart
+        width={1500}
+        height={750}
+        data={data}
+        style={{ backgroundColor: "black" }}
+      >
         <Line
           type="monotone"
           dataKey="stockValues"
@@ -69,11 +95,119 @@ const Graph = ({ xValues, yValues, stock, timeInterval }) => {
           strokeWidth={1}
           dot={false}
         />
+        {twentyOneEMA.length !== 0 ? (
+          <Line
+            type="monotone"
+            dataKey="twentyOneEMA"
+            name="21 EMA"
+            stroke="white"
+            strokeWidth={1}
+            dot={false}
+          />
+        ) : (
+          ""
+        )}
+        {fiftyEMA.length !== 0 ? (
+          <Line
+            type="monotone"
+            dataKey="fiftyEMA"
+            name="50 EMA"
+            stroke="red"
+            strokeWidth={1}
+            dot={false}
+          />
+        ) : (
+          ""
+        )}
+        {hundredEMA.length !== 0 ? (
+          <Line
+            type="monotone"
+            dataKey="hundredEMA"
+            name="100 EMA"
+            stroke="yellow"
+            strokeWidth={1}
+            dot={false}
+          />
+        ) : (
+          ""
+        )}
+        {twoHundredEMA.length !== 0 ? (
+          <Line
+            type="monotone"
+            dataKey="twoHundredEMA"
+            name="200 EMA"
+            stroke="purple"
+            strokeWidth={1}
+            dot={false}
+          />
+        ) : (
+          ""
+        )}
+        {fiftySMA.length !== 0 ? (
+          <Line
+            type="monotone"
+            dataKey="fiftySMA"
+            name="50 SMA"
+            stroke="green"
+            strokeWidth={1}
+            dot={false}
+          />
+        ) : (
+          ""
+        )}
+        {hundredSMA.length !== 0 ? (
+          <Line
+            type="monotone"
+            dataKey="hundredSMA"
+            name="100 SMA"
+            stroke="orange"
+            strokeWidth={1}
+            dot={false}
+          />
+        ) : (
+          ""
+        )}
+        {twoHundredSMA.length !== 0 ? (
+          <Line
+            type="monotone"
+            dataKey="twoHundredSMA"
+            name="200 SMA"
+            stroke="pink"
+            strokeWidth={1}
+            dot={false}
+          />
+        ) : (
+          ""
+        )}
+
         <CartesianGrid stroke="#ccc" />
         <XAxis dataKey="name" domain={[xMin, xMax]} />
         <YAxis type="number" domain={[yMin, yMax]} />
         <Legend />
       </LineChart>
+      <div className="row" style={{ marginTop: "2vh" }}>
+        <button className="ui button" onClick={() => getEMA(21)}>
+          Add 21 EMA
+        </button>
+        <button className="ui button" onClick={() => getEMA(50)}>
+          Add 50 EMA
+        </button>
+        <button className="ui button" onClick={() => getEMA(100)}>
+          Add 100 EMA
+        </button>
+        <button className="ui button" onClick={() => getEMA(200)}>
+          Add 200 EMA
+        </button>
+        <button className="ui button" onClick={() => getSMA(50)}>
+          Add 50 SMA
+        </button>
+        <button className="ui button" onClick={() => getSMA(100)}>
+          Add 100 SMA
+        </button>
+        <button className="ui button" onClick={() => getSMA(200)}>
+          Add 200 SMA
+        </button>
+      </div>
     </>
   );
 };

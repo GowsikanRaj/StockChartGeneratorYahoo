@@ -12,6 +12,13 @@ const App = () => {
   const [yValues, setYValues] = useState([]);
   const [range, setRange] = useState(365);
   const [interval, setInterval] = useState("1day");
+  const [twentyOneEMA, setTwentyOneEMA] = useState([]);
+  const [fiftyEMA, setFiftyEMA] = useState([]);
+  const [hundredEMA, setHundredEMA] = useState([]);
+  const [twoHundredEMA, setTwoHundredEMA] = useState([]);
+  const [fiftySMA, setFiftySMA] = useState([]);
+  const [hundredSMA, setHundredSMA] = useState([]);
+  const [twoHundredSMA, setTwoHundredSMA] = useState([]);
 
   useEffect(() => {
     if (stock && !xValues.length) {
@@ -57,6 +64,56 @@ const App = () => {
     setRange(r);
   };
 
+  const getEMA = async (timePeriod) => {
+    const data = await axios
+      .get(`https://api.twelvedata.com/ema`, {
+        params: {
+          symbol: stock,
+          interval: interval,
+          apikey: API_KEY,
+          outputsize: range,
+          time_period: timePeriod,
+        },
+      })
+      .then((response) => JSON.parse(JSON.stringify(response.data.values)));
+
+    let values = data.map((item) => item["ema"]);
+
+    if (timePeriod === 21) {
+      setTwentyOneEMA(values.reverse());
+    } else if (timePeriod === 50) {
+      setFiftyEMA(values.reverse());
+    } else if (timePeriod === 100) {
+      setHundredEMA(values.reverse());
+    } else if (timePeriod === 200) {
+      setTwoHundredEMA(values.reverse());
+    }
+  };
+
+  const getSMA = async (timePeriod) => {
+    const data = await axios
+      .get(`https://api.twelvedata.com/sma`, {
+        params: {
+          symbol: stock,
+          interval: interval,
+          apikey: API_KEY,
+          outputsize: range,
+          time_period: timePeriod,
+        },
+      })
+      .then((response) => JSON.parse(JSON.stringify(response.data.values)));
+
+    let values = data.map((item) => item["sma"]);
+
+    if (timePeriod === 50) {
+      setFiftySMA(values.reverse());
+    } else if (timePeriod === 100) {
+      setHundredSMA(values.reverse());
+    } else if (timePeriod === 200) {
+      setTwoHundredSMA(values.reverse());
+    }
+  };
+
   return (
     <>
       <div className="ui center aligned header" style={{ margin: "20px" }}>
@@ -70,6 +127,15 @@ const App = () => {
               stock={stock}
               xValues={xValues}
               yValues={yValues}
+              getEMA={getEMA}
+              getSMA={getSMA}
+              twentyOneEMA={twentyOneEMA}
+              fiftyEMA={fiftyEMA}
+              hundredEMA={hundredEMA}
+              twoHundredEMA={twoHundredEMA}
+              fiftySMA={fiftySMA}
+              hundredSMA={hundredSMA}
+              twoHundredSMA={twoHundredSMA}
               timeInterval={timeInterval}
             />
           </div>
