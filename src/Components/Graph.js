@@ -40,8 +40,8 @@ const Graph = ({
   const rsiData = xValues.map((item, index) => ({
     name: item,
     rsiValues: rsi[index],
-    overSold: 20,
-    overBought: 80,
+    overSold: 30,
+    overBought: 70,
   }));
 
   return (
