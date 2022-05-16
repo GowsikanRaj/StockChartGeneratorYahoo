@@ -30,6 +30,13 @@ const Graph = ({
     twoHundredSMA: twoHundredSMA[index],
   }));
 
+  const y = data.map((y) => y);
+  const yAxisRange = y.sort(function (a, b) {
+    return a - b;
+  });
+  const yMin = yAxisRange[0];
+  const yMax = yAxisRange[yValues.length - 1];
+
   const rsiData = xValues.map((item, index) => ({
     name: item,
     rsiValues: rsi[index],
@@ -215,7 +222,7 @@ const Graph = ({
 
         <CartesianGrid stroke="#ccc" />
         <XAxis dataKey="name" />
-        <YAxis type="number" />
+        <YAxis type="number" domain={[yMin, yMax]} />
         <Legend />
       </LineChart>
 
