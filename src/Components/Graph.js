@@ -1,5 +1,5 @@
 import React from "react";
-import Plot from "react-plotly.js";
+import { LineChart, Line, CartesianGrid, XAxis, YAxis, Legend } from "recharts";
 
 const Graph = ({ xValues, yValues, stock, timeInterval }) => {
   const xMin = xValues[0];
@@ -12,6 +12,11 @@ const Graph = ({ xValues, yValues, stock, timeInterval }) => {
   const yMin = yAxisRange[0];
   const yMax = yAxisRange[yValues.length - 1];
 
+  const data = xValues.map((item, index) => ({
+    name: item,
+    stockValues: yValues[index],
+  }));
+
   return (
     <>
       <h3 style={{ display: "flex", justifyContent: "center" }}>
@@ -20,71 +25,55 @@ const Graph = ({ xValues, yValues, stock, timeInterval }) => {
       <div style={{ marginLeft: "3vw" }}>
         <button
           className="ui tiny button"
-          onClick={() => timeInterval("1d", "1m")}
+          onClick={() => timeInterval(390, "1min")}
         >
           1d
         </button>
         <button
           className="ui tiny button"
-          onClick={() => timeInterval("5d", "5m")}
+          onClick={() => timeInterval(390, "5min")}
         >
           1w
         </button>
         <button
           className="ui tiny button"
-          onClick={() => timeInterval("1mo", "1d")}
+          onClick={() => timeInterval(21, "1day")}
         >
           1m
         </button>
         <button
           className="ui tiny button"
-          onClick={() => timeInterval("3mo", "1d")}
+          onClick={() => timeInterval(63, "1day")}
         >
           3m
         </button>
         <button
           className="ui tiny button"
-          onClick={() => timeInterval("6mo", "1d")}
+          onClick={() => timeInterval(126, "1day")}
         >
           6m
         </button>
         <button
           className="ui tiny button"
-          onClick={() => timeInterval("1y", "1d")}
+          onClick={() => timeInterval(253, "1day")}
         >
           1y
         </button>
       </div>
-      <Plot
-        data={[
-          {
-            x: xValues,
-            y: yValues,
-            type: "scatter",
-            mode: "lines+markers",
-            marker: { color: "blue", size: 2 },
-          },
-        ]}
-        layout={{
-          width: 1500,
-          height: 750,
-          xaxis: {
-            title: stock,
-            showline: true,
-            mirror: true,
-            range: [xMin, xMax],
-          },
-          yaxis: {
-            title: "Price",
-            showline: true,
-            mirror: true,
-            range: [yMin, yMax],
-          },
-        }}
-        config={{
-          displayModeBar: false,
-        }}
-      />
+      <LineChart width={1500} height={750} data={data}>
+        <Line
+          type="monotone"
+          dataKey="stockValues"
+          name={stock}
+          stroke="blue"
+          strokeWidth={1}
+          dot={false}
+        />
+        <CartesianGrid stroke="#ccc" />
+        <XAxis dataKey="name" domain={[xMin, xMax]} />
+        <YAxis type="number" domain={[yMin, yMax]} />
+        <Legend />
+      </LineChart>
     </>
   );
 };

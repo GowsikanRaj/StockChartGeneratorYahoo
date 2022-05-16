@@ -10,8 +10,8 @@ const App = () => {
   const [stock, setStock] = useState("AAPL");
   const [xValues, setXValues] = useState([]);
   const [yValues, setYValues] = useState([]);
-  const [range, setRange] = useState("1y");
-  const [interval, setInterval] = useState("1d");
+  const [range, setRange] = useState(365);
+  const [interval, setInterval] = useState("1day");
 
   useEffect(() => {
     if (stock && !xValues.length) {
@@ -31,87 +31,21 @@ const App = () => {
 
   const search = async () => {
     const data = await axios
-      .get(`https://yfapi.net/v8/finance/chart/${stock}`, {
+      .get(`https://api.twelvedata.com/time_series`, {
         params: {
-          range: range,
-          region: "US",
+          symbol: stock,
           interval: interval,
-          lang: "en",
-        },
-        headers: {
-          "x-api-key": API_KEY,
+          apikey: API_KEY,
+          outputsize: range,
         },
       })
-      .then((response) =>
-        JSON.parse(JSON.stringify(response.data.chart.result[0]))
-      );
+      .then((response) => JSON.parse(JSON.stringify(response.data.values)));
 
-    let x = [];
-    let y = [];
+    let x = data.map((item) => item["datetime"]);
+    let y = data.map((item) => Number(item["close"]).toFixed(2));
 
-    for (let i = 0; i <= data["timestamp"].length; i++) {
-      if (
-        range === "1y" ||
-        range === "6mo" ||
-        range === "3mo" ||
-        range === "1mo"
-      ) {
-        let date =
-          String(new Date(data["timestamp"][i] * 1000).getFullYear()) +
-          "-" +
-          String(new Date(data["timestamp"][i] * 1000).getMonth() + 1).padStart(
-            2,
-            "0"
-          ) +
-          "-" +
-          String(new Date(data["timestamp"][i] * 1000).getDate()).padStart(
-            2,
-            "0"
-          );
-
-        x.push(date);
-      } else if (range === "1d") {
-        let date =
-          String(new Date(data["timestamp"][i] * 1000).getHours()) +
-          ":" +
-          String(new Date(data["timestamp"][i] * 1000).getMinutes()).padStart(
-            2,
-            "0"
-          );
-
-        x.push(date);
-      } else if (range === "5d") {
-        let date =
-          String(new Date(data["timestamp"][i] * 1000).getFullYear()) +
-          "-" +
-          String(new Date(data["timestamp"][i] * 1000).getMonth() + 1).padStart(
-            2,
-            "0"
-          ) +
-          "-" +
-          String(new Date(data["timestamp"][i] * 1000).getDate()).padStart(
-            2,
-            "0"
-          ) +
-          " " +
-          String(new Date(data["timestamp"][i] * 1000).getHours()) +
-          ":" +
-          String(new Date(data["timestamp"][i] * 1000).getMinutes()).padStart(
-            2,
-            "0"
-          );
-
-        x.push(date);
-      }
-
-      y.push(Number(data["indicators"]["quote"][0]["close"][i]).toFixed(2));
-    }
-
-    x.pop();
-    y.pop();
-
-    setXValues([...x]);
-    setYValues([...y]);
+    setXValues([...x].reverse());
+    setYValues([...y].reverse());
   };
 
   const changeStock = (value) => {
@@ -119,8 +53,8 @@ const App = () => {
   };
 
   const timeInterval = (r, i) => {
-    setRange(r);
     setInterval(i);
+    setRange(r);
   };
 
   return (
