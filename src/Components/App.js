@@ -20,8 +20,8 @@ const App = () => {
   const [hundredSMA, setHundredSMA] = useState([]);
   const [twoHundredSMA, setTwoHundredSMA] = useState([]);
   const [RSI, setRSI] = useState([]);
-  // const [macd, setMacd] = useState([]);
-  // const [macdsignal, setMacdsignal] = useState([]);
+  const [macd, setMacd] = useState([]);
+  const [macdsignal, setMacdsignal] = useState([]);
   const [upperBB, setUpperBB] = useState([]);
   const [middleBB, setMiddleBB] = useState([]);
   const [lowerBB, setLowerBB] = useState([]);
@@ -53,9 +53,9 @@ const App = () => {
       if (RSI.length !== 0) {
         getRSI();
       }
-      // if (macd.length !== 0) {
-      //   getMacd();
-      // }
+      if (macd.length !== 0) {
+        getMacd();
+      }
       if (upperBB.length !== 0) {
         getBollingerBands();
       }
@@ -87,9 +87,9 @@ const App = () => {
           if (RSI.length !== 0) {
             getRSI();
           }
-          // if (macd.length !== 0) {
-          //   getMacd();
-          // }
+          if (macd.length !== 0) {
+            getMacd();
+          }
           if (upperBB.length !== 0) {
             getBollingerBands();
           }
@@ -205,26 +205,26 @@ const App = () => {
     setRSI(values.reverse());
   };
 
-  // const getMacd = async () => {
-  //   const data = await axios
-  //     .get(`https://api.twelvedata.com/macd`, {
-  //       params: {
-  //         symbol: stock,
-  //         interval: interval,
-  //         apikey: API_KEY,
-  //         outputsize: range,
-  //         fast_period: 12,
-  //         series_type: "close",
-  //         signal_period: 9,
-  //         slow_period: 26,
-  //       },
-  //     })
-  //     .then((response) => JSON.parse(JSON.stringify(response.data.values)));
-  //   let macD = data.map((item) => item["macd"]);
-  //   let signal = data.map((item) => item["macd_signal"]);
-  //   setMacd(macD.reverse());
-  //   setMacdsignal(signal.reverse());
-  // };
+  const getMacd = async () => {
+    const data = await axios
+      .get(`https://api.twelvedata.com/macd`, {
+        params: {
+          symbol: stock,
+          interval: interval,
+          apikey: API_KEY,
+          outputsize: range,
+          fast_period: 12,
+          series_type: "close",
+          signal_period: 9,
+          slow_period: 26,
+        },
+      })
+      .then((response) => JSON.parse(JSON.stringify(response.data.values)));
+    let macD = data.map((item) => Number(item["macd"]).toFixed(2));
+    let signal = data.map((item) => Number(item["macd_signal"]).toFixed(2));
+    setMacd(macD.reverse());
+    setMacdsignal(signal.reverse());
+  };
 
   const getBollingerBands = async () => {
     const data = await axios
@@ -276,9 +276,9 @@ const App = () => {
               timeInterval={timeInterval}
               rsi={RSI}
               getRSI={getRSI}
-              // macd={macd}
-              // macdSignal={macdsignal}
-              // getMacd={getMacd}
+              macd={macd}
+              macdSignal={macdsignal}
+              getMacd={getMacd}
               upperband={upperBB}
               middleband={middleBB}
               lowerband={lowerBB}

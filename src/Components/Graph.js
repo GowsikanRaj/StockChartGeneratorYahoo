@@ -1,7 +1,9 @@
 import React from "react";
 import {
   LineChart,
+  ComposedChart,
   Line,
+  Area,
   CartesianGrid,
   XAxis,
   YAxis,
@@ -25,9 +27,9 @@ const Graph = ({
   timeInterval,
   rsi,
   getRSI,
-  // macd,
-  // macdSignal,
-  // getMacd,
+  macd,
+  macdSignal,
+  getMacd,
   upperband,
   middleband,
   lowerband,
@@ -55,18 +57,19 @@ const Graph = ({
     overBought: 70,
   }));
 
-  // const macdData = xValues.map((item, index) => ({
-  //   name: item,
-  //   macdValues: macd[index],
-  //   macdsignalValues: macdSignal[index],
-  // }));
+  const macdData = xValues.map((item, index) => ({
+    name: item,
+    macdValues: macd[index],
+    macdsignalValues: macdSignal[index],
+  }));
 
-  // const md = macdData.map((y) => y["macdValues"]);
-  // const mdAxisRange = md.sort(function (a, b) {
-  //   return a - b;
-  // });
-  // const macdMin = mdAxisRange[0];
-  // const macdMax = mdAxisRange[macd.length - 1];
+  const md = macd.map((y) => y);
+  const mdAxisRange = md.sort(function (a, b) {
+    return a - b;
+  });
+
+  const macdMin = mdAxisRange[0];
+  const macdMax = mdAxisRange[macd.length - 1];
 
   const y = data.map((y) => y);
   const yAxisRange = y.sort(function (a, b) {
@@ -119,12 +122,7 @@ const Graph = ({
         </button>
       </div>
 
-      <LineChart
-        width={1500}
-        height={750}
-        data={data}
-        style={{ backgroundColor: "black" }}
-      >
+      <ComposedChart width={1500} height={750} data={data}>
         <Line
           type="monotone"
           dataKey="stockValues"
@@ -138,7 +136,7 @@ const Graph = ({
             type="monotone"
             dataKey="twentyOneEMA"
             name="21 EMA"
-            stroke="white"
+            stroke="black"
             strokeWidth={2}
             dot={false}
           />
@@ -219,80 +217,49 @@ const Graph = ({
         )}
         {upperband.length !== 0 ? (
           <>
-            <Line
+            <Area
               type="monotone"
               dataKey="upperBand"
               name="Upper Bollinger Band"
-              stroke="white"
-              strokeWidth={2}
-              dot={false}
+              stroke="blue"
+              fill="blue"
+              fillOpacity={0.05}
             />
-            <Line
+            <Area
               type="monotone"
               dataKey="middleBand"
               name="Middle Bollinger Band"
               stroke="orange"
-              strokeWidth={2}
-              dot={false}
+              fill="blue"
+              fillOpacity={0.025}
             />
-            <Line
+            <Area
               type="monotone"
               dataKey="lowerBand"
               name="Lower Bollinger Band"
-              stroke="white"
-              strokeWidth={2}
-              dot={false}
+              stroke="blue"
+              fill="white"
+              fillOpacity={1}
             />
           </>
         ) : (
           ""
         )}
 
-        <CartesianGrid stroke="#fff" />
-        {rsi.length === 0 ? <XAxis dataKey="name" /> : ""}
+        <CartesianGrid stroke="#ccc" />
+        {rsi.length === 0 && macd.length === 0 ? <XAxis dataKey="name" /> : ""}
         <YAxis type="number" domain={[yMin, yMax]} />
         <Legend />
-      </LineChart>
-      {/* {macd.length !== 0 ? (
-        <LineChart
-          width={1500}
-          height={150}
-          margin={{
-            top: 5,
-            right: 30,
-            left: 20,
-            bottom: 5,
-          }}
-          data={macdData}
-          style={{ backgroundColor: "black" }}
-        >
-          <Line
-            type="monotone"
-            dataKey="macdValues"
-            stroke="blue"
-            strokeWidth={1}
-            dot={false}
-          />
-          <Line
-            type="monotone"
-            dataKey="macdsignalValues"
-            stroke="orange"
-            strokeWidth={1}
-            dot={false}
-          />
-          <XAxis dataKey="name" />
-          <YAxis type="number" domain={[macdMin, macdMax]} />
-          <ReferenceLine y={0} stroke="#000" />
-        </LineChart>
-      ) : (
-        ""
-      )} */}
+      </ComposedChart>
+
       {rsi.length !== 0 ? (
         <LineChart
           width={1500}
           height={150}
           data={rsiData}
-          style={{ backgroundColor: "black" }}
+          margin={{
+            top: 20,
+          }}
         >
           <Line
             type="monotone"
@@ -315,7 +282,7 @@ const Graph = ({
             strokeWidth={2}
             dot={false}
           />
-          <XAxis dataKey="name" />
+          {macd.length === 0 ? <XAxis dataKey="name" /> : ""}
           <YAxis type="number" />
           <ReferenceLine y={0} />
         </LineChart>
@@ -323,7 +290,37 @@ const Graph = ({
         ""
       )}
 
-      <div className="row" style={{ marginTop: "2vh" }}>
+      {macd.length !== 0 ? (
+        <ComposedChart
+          width={1500}
+          height={150}
+          data={macdData}
+          margin={{
+            top: 20,
+          }}
+        >
+          <Line
+            type="monotone"
+            dataKey="macdValues"
+            stroke="blue"
+            strokeWidth={2}
+            dot={false}
+          />
+          <Line
+            type="monotone"
+            dataKey="macdsignalValues"
+            stroke="orange"
+            strokeWidth={2}
+            dot={false}
+          />
+          <XAxis dataKey="name" />
+          <YAxis type="number" domain={[macdMin - 0.5, macdMax + 0.5]} />
+          <ReferenceLine y={0} stroke="#000" />
+        </ComposedChart>
+      ) : (
+        ""
+      )}
+      <div className="row" style={{ marginTop: "5vh" }}>
         <button className="ui button" onClick={() => getEMA(21)}>
           Add 21 EMA
         </button>
@@ -348,9 +345,9 @@ const Graph = ({
         <button className="ui button" onClick={() => getRSI()}>
           Add RSI
         </button>
-        {/* <button className="ui button" onClick={() => getMacd()}>
+        <button className="ui button" onClick={() => getMacd()}>
           Add MACD
-        </button> */}
+        </button>
         <button className="ui button" onClick={() => getBollingerBands()}>
           Add Bollinger Bands
         </button>
