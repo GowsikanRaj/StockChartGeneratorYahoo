@@ -20,6 +20,11 @@ const App = () => {
   const [hundredSMA, setHundredSMA] = useState([]);
   const [twoHundredSMA, setTwoHundredSMA] = useState([]);
   const [RSI, setRSI] = useState([]);
+  // const [macd, setMacd] = useState([]);
+  // const [macdsignal, setMacdsignal] = useState([]);
+  const [upperBB, setUpperBB] = useState([]);
+  const [middleBB, setMiddleBB] = useState([]);
+  const [lowerBB, setLowerBB] = useState([]);
 
   useEffect(() => {
     if (stock && !xValues.length) {
@@ -48,6 +53,12 @@ const App = () => {
       if (RSI.length !== 0) {
         getRSI();
       }
+      // if (macd.length !== 0) {
+      //   getMacd();
+      // }
+      if (upperBB.length !== 0) {
+        getBollingerBands();
+      }
     } else {
       const timeoutId = setTimeout(() => {
         if (stock) {
@@ -75,6 +86,12 @@ const App = () => {
           }
           if (RSI.length !== 0) {
             getRSI();
+          }
+          // if (macd.length !== 0) {
+          //   getMacd();
+          // }
+          if (upperBB.length !== 0) {
+            getBollingerBands();
           }
         }
       }, 500);
@@ -188,6 +205,52 @@ const App = () => {
     setRSI(values.reverse());
   };
 
+  // const getMacd = async () => {
+  //   const data = await axios
+  //     .get(`https://api.twelvedata.com/macd`, {
+  //       params: {
+  //         symbol: stock,
+  //         interval: interval,
+  //         apikey: API_KEY,
+  //         outputsize: range,
+  //         fast_period: 12,
+  //         series_type: "close",
+  //         signal_period: 9,
+  //         slow_period: 26,
+  //       },
+  //     })
+  //     .then((response) => JSON.parse(JSON.stringify(response.data.values)));
+  //   let macD = data.map((item) => item["macd"]);
+  //   let signal = data.map((item) => item["macd_signal"]);
+  //   setMacd(macD.reverse());
+  //   setMacdsignal(signal.reverse());
+  // };
+
+  const getBollingerBands = async () => {
+    const data = await axios
+      .get(`https://api.twelvedata.com/bbands`, {
+        params: {
+          symbol: stock,
+          interval: interval,
+          apikey: API_KEY,
+          outputsize: range,
+          ma_type: "SMA",
+          series_type: "close",
+          sd: 2,
+          time_period: 20,
+        },
+      })
+      .then((response) => JSON.parse(JSON.stringify(response.data.values)));
+
+    let upperband = data.map((item) => Number(item["upper_band"]).toFixed(2));
+    let middleband = data.map((item) => Number(item["middle_band"]).toFixed(2));
+    let lowerband = data.map((item) => Number(item["lower_band"]).toFixed(2));
+
+    setUpperBB(upperband.reverse());
+    setMiddleBB(middleband.reverse());
+    setLowerBB(lowerband.reverse());
+  };
+
   return (
     <>
       <div className="ui center aligned header" style={{ margin: "20px" }}>
@@ -213,6 +276,13 @@ const App = () => {
               timeInterval={timeInterval}
               rsi={RSI}
               getRSI={getRSI}
+              // macd={macd}
+              // macdSignal={macdsignal}
+              // getMacd={getMacd}
+              upperband={upperBB}
+              middleband={middleBB}
+              lowerband={lowerBB}
+              getBollingerBands={getBollingerBands}
             />
           </div>
         </div>

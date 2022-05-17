@@ -1,5 +1,13 @@
 import React from "react";
-import { LineChart, Line, CartesianGrid, XAxis, YAxis, Legend } from "recharts";
+import {
+  LineChart,
+  Line,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Legend,
+  ReferenceLine,
+} from "recharts";
 
 const Graph = ({
   xValues,
@@ -17,6 +25,13 @@ const Graph = ({
   timeInterval,
   rsi,
   getRSI,
+  // macd,
+  // macdSignal,
+  // getMacd,
+  upperband,
+  middleband,
+  lowerband,
+  getBollingerBands,
 }) => {
   const data = xValues.map((item, index) => ({
     name: item,
@@ -28,14 +43,10 @@ const Graph = ({
     fiftySMA: fiftySMA[index],
     hundredSMA: hundredSMA[index],
     twoHundredSMA: twoHundredSMA[index],
+    upperBand: upperband[index],
+    middleBand: middleband[index],
+    lowerBand: lowerband[index],
   }));
-
-  const y = data.map((y) => y);
-  const yAxisRange = y.sort(function (a, b) {
-    return a - b;
-  });
-  const yMin = yAxisRange[0];
-  const yMax = yAxisRange[yValues.length - 1];
 
   const rsiData = xValues.map((item, index) => ({
     name: item,
@@ -43,6 +54,26 @@ const Graph = ({
     overSold: 30,
     overBought: 70,
   }));
+
+  // const macdData = xValues.map((item, index) => ({
+  //   name: item,
+  //   macdValues: macd[index],
+  //   macdsignalValues: macdSignal[index],
+  // }));
+
+  // const md = macdData.map((y) => y["macdValues"]);
+  // const mdAxisRange = md.sort(function (a, b) {
+  //   return a - b;
+  // });
+  // const macdMin = mdAxisRange[0];
+  // const macdMax = mdAxisRange[macd.length - 1];
+
+  const y = data.map((y) => y);
+  const yAxisRange = y.sort(function (a, b) {
+    return a - b;
+  });
+  const yMin = yAxisRange[0];
+  const yMax = yAxisRange[yValues.length - 1];
 
   return (
     <>
@@ -87,39 +118,6 @@ const Graph = ({
           1y
         </button>
       </div>
-      {rsi.length !== 0 ? (
-        <LineChart
-          width={1500}
-          height={150}
-          data={rsiData}
-          style={{ backgroundColor: "black" }}
-        >
-          <Line
-            type="monotone"
-            dataKey="rsiValues"
-            stroke="purple"
-            strokeWidth={2}
-            dot={false}
-          />
-          <Line
-            type="monotone"
-            dataKey="overSold"
-            stroke="green"
-            strokeWidth={2}
-            dot={false}
-          />
-          <Line
-            type="monotone"
-            dataKey="overBought"
-            stroke="red"
-            strokeWidth={2}
-            dot={false}
-          />
-          <YAxis type="number" />
-        </LineChart>
-      ) : (
-        ""
-      )}
 
       <LineChart
         width={1500}
@@ -219,12 +217,111 @@ const Graph = ({
         ) : (
           ""
         )}
+        {upperband.length !== 0 ? (
+          <>
+            <Line
+              type="monotone"
+              dataKey="upperBand"
+              name="Upper Bollinger Band"
+              stroke="white"
+              strokeWidth={2}
+              dot={false}
+            />
+            <Line
+              type="monotone"
+              dataKey="middleBand"
+              name="Middle Bollinger Band"
+              stroke="orange"
+              strokeWidth={2}
+              dot={false}
+            />
+            <Line
+              type="monotone"
+              dataKey="lowerBand"
+              name="Lower Bollinger Band"
+              stroke="white"
+              strokeWidth={2}
+              dot={false}
+            />
+          </>
+        ) : (
+          ""
+        )}
 
-        <CartesianGrid stroke="#ccc" />
-        <XAxis dataKey="name" />
+        <CartesianGrid stroke="#fff" />
+        {rsi.length === 0 ? <XAxis dataKey="name" /> : ""}
         <YAxis type="number" domain={[yMin, yMax]} />
         <Legend />
       </LineChart>
+      {/* {macd.length !== 0 ? (
+        <LineChart
+          width={1500}
+          height={150}
+          margin={{
+            top: 5,
+            right: 30,
+            left: 20,
+            bottom: 5,
+          }}
+          data={macdData}
+          style={{ backgroundColor: "black" }}
+        >
+          <Line
+            type="monotone"
+            dataKey="macdValues"
+            stroke="blue"
+            strokeWidth={1}
+            dot={false}
+          />
+          <Line
+            type="monotone"
+            dataKey="macdsignalValues"
+            stroke="orange"
+            strokeWidth={1}
+            dot={false}
+          />
+          <XAxis dataKey="name" />
+          <YAxis type="number" domain={[macdMin, macdMax]} />
+          <ReferenceLine y={0} stroke="#000" />
+        </LineChart>
+      ) : (
+        ""
+      )} */}
+      {rsi.length !== 0 ? (
+        <LineChart
+          width={1500}
+          height={150}
+          data={rsiData}
+          style={{ backgroundColor: "black" }}
+        >
+          <Line
+            type="monotone"
+            dataKey="rsiValues"
+            stroke="purple"
+            strokeWidth={2}
+            dot={false}
+          />
+          <Line
+            type="monotone"
+            dataKey="overSold"
+            stroke="green"
+            strokeWidth={2}
+            dot={false}
+          />
+          <Line
+            type="monotone"
+            dataKey="overBought"
+            stroke="red"
+            strokeWidth={2}
+            dot={false}
+          />
+          <XAxis dataKey="name" />
+          <YAxis type="number" />
+          <ReferenceLine y={0} />
+        </LineChart>
+      ) : (
+        ""
+      )}
 
       <div className="row" style={{ marginTop: "2vh" }}>
         <button className="ui button" onClick={() => getEMA(21)}>
@@ -250,6 +347,12 @@ const Graph = ({
         </button>
         <button className="ui button" onClick={() => getRSI()}>
           Add RSI
+        </button>
+        {/* <button className="ui button" onClick={() => getMacd()}>
+          Add MACD
+        </button> */}
+        <button className="ui button" onClick={() => getBollingerBands()}>
+          Add Bollinger Bands
         </button>
       </div>
     </>
