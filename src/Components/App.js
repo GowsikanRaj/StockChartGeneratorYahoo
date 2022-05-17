@@ -164,6 +164,18 @@ const App = () => {
     }
   };
 
+  const removeEMA = async (timePeriod) => {
+    if (timePeriod === 21) {
+      setTwentyOneEMA([]);
+    } else if (timePeriod === 50) {
+      setFiftyEMA([]);
+    } else if (timePeriod === 100) {
+      setHundredEMA([]);
+    } else if (timePeriod === 200) {
+      setTwoHundredEMA([]);
+    }
+  };
+
   const getSMA = async (timePeriod) => {
     const data = await axios
       .get(`https://api.twelvedata.com/sma`, {
@@ -188,6 +200,16 @@ const App = () => {
     }
   };
 
+  const removeSMA = async (timePeriod) => {
+    if (timePeriod === 50) {
+      setFiftySMA([]);
+    } else if (timePeriod === 100) {
+      setHundredSMA([]);
+    } else if (timePeriod === 200) {
+      setTwoHundredSMA([]);
+    }
+  };
+
   const getRSI = async () => {
     const data = await axios
       .get(`https://api.twelvedata.com/rsi`, {
@@ -203,6 +225,10 @@ const App = () => {
 
     let values = data.map((item) => item["rsi"]);
     setRSI(values.reverse());
+  };
+
+  const removeRSI = () => {
+    setRSI([]);
   };
 
   const getMacd = async () => {
@@ -224,6 +250,11 @@ const App = () => {
     let signal = data.map((item) => Number(item["macd_signal"]).toFixed(2));
     setMacd(macD.reverse());
     setMacdsignal(signal.reverse());
+  };
+
+  const removeMACD = () => {
+    setMacd([]);
+    setMacdsignal([]);
   };
 
   const getBollingerBands = async () => {
@@ -249,6 +280,12 @@ const App = () => {
     setUpperBB(upperband.reverse());
     setMiddleBB(middleband.reverse());
     setLowerBB(lowerband.reverse());
+  };
+
+  const removeBollingerBands = () => {
+    setUpperBB([]);
+    setMiddleBB([]);
+    setLowerBB([]);
   };
 
   return (
@@ -283,6 +320,11 @@ const App = () => {
               middleband={middleBB}
               lowerband={lowerBB}
               getBollingerBands={getBollingerBands}
+              removeEMA={removeEMA}
+              removeSMA={removeSMA}
+              removeRSI={removeRSI}
+              removeMACD={removeMACD}
+              removeBollingerBands={removeBollingerBands}
             />
           </div>
         </div>
