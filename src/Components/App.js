@@ -151,7 +151,7 @@ const App = () => {
       })
       .then((response) => JSON.parse(JSON.stringify(response.data.values)));
 
-    let values = data.map((item) => item["ema"]);
+    let values = data.map((item) => Number(item["ema"]).toFixed(2));
 
     if (timePeriod === 21) {
       setTwentyOneEMA(values.reverse());
@@ -177,7 +177,7 @@ const App = () => {
       })
       .then((response) => JSON.parse(JSON.stringify(response.data.values)));
 
-    let values = data.map((item) => item["sma"]);
+    let values = data.map((item) => Number(item["sma"]).toFixed(2));
 
     if (timePeriod === 50) {
       setFiftySMA(values.reverse());
