@@ -227,6 +227,36 @@ const Graph = ({
       </div>
 
       <ComposedChart width={1500} height={750} data={data}>
+        {upperband.length !== 0 ? (
+          <>
+            <Area
+              type="monotone"
+              dataKey="upperBand"
+              name="Upper Bollinger Band"
+              stroke="blue"
+              fill="blue"
+              fillOpacity={0.05}
+            />
+            <Area
+              type="monotone"
+              dataKey="middleBand"
+              name="Middle Bollinger Band"
+              stroke="orange"
+              fill="blue"
+              fillOpacity={0.05}
+            />
+            <Area
+              type="monotone"
+              dataKey="lowerBand"
+              name="Lower Bollinger Band"
+              stroke="blue"
+              fill="white"
+              fillOpacity={1}
+            />
+          </>
+        ) : (
+          ""
+        )}
         <Line
           type="monotone"
           dataKey="stockValues"
@@ -316,36 +346,6 @@ const Graph = ({
             strokeWidth={2}
             dot={false}
           />
-        ) : (
-          ""
-        )}
-        {upperband.length !== 0 ? (
-          <>
-            <Area
-              type="monotone"
-              dataKey="upperBand"
-              name="Upper Bollinger Band"
-              stroke="blue"
-              fill="blue"
-              fillOpacity={0.05}
-            />
-            <Area
-              type="monotone"
-              dataKey="middleBand"
-              name="Middle Bollinger Band"
-              stroke="orange"
-              fill="blue"
-              fillOpacity={0.025}
-            />
-            <Area
-              type="monotone"
-              dataKey="lowerBand"
-              name="Lower Bollinger Band"
-              stroke="blue"
-              fill="white"
-              fillOpacity={1}
-            />
-          </>
         ) : (
           ""
         )}
