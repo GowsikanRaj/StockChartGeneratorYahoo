@@ -3,7 +3,7 @@ import axios from "axios";
 import SearchBar from "./SearchBar";
 import Graph from "./Graph";
 import Watchlist from "./Watchlist";
-import Snackbar from "./Snackbar";
+import Snackbar from "./Alert";
 const API_KEY = process.env.REACT_APP_API_KEY;
 
 const App = () => {
