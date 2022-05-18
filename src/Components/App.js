@@ -4,6 +4,7 @@ import SearchBar from "./SearchBar";
 import Graph from "./Graph";
 import Watchlist from "./Watchlist";
 import Snackbar from "./Alert";
+import Indicators from "./Indicators";
 const API_KEY = process.env.REACT_APP_API_KEY;
 
 const App = () => {
@@ -324,8 +325,6 @@ const App = () => {
               stock={stock}
               xValues={xValues}
               yValues={yValues}
-              getEMA={getEMA}
-              getSMA={getSMA}
               twentyOneEMA={twentyOneEMA}
               fiftyEMA={fiftyEMA}
               hundredEMA={hundredEMA}
@@ -335,13 +334,17 @@ const App = () => {
               twoHundredSMA={twoHundredSMA}
               timeInterval={timeInterval}
               rsi={RSI}
-              getRSI={getRSI}
               macd={macd}
               macdSignal={macdsignal}
-              getMacd={getMacd}
               upperband={upperBB}
               middleband={middleBB}
               lowerband={lowerBB}
+            />
+            <Indicators
+              getEMA={getEMA}
+              getSMA={getSMA}
+              getRSI={getRSI}
+              getMacd={getMacd}
               getBollingerBands={getBollingerBands}
               removeEMA={removeEMA}
               removeSMA={removeSMA}
