@@ -1,4 +1,5 @@
 import React from "react";
+import TimeInterval from "./TimeInterval";
 import {
   LineChart,
   ComposedChart,
@@ -45,6 +46,13 @@ const Graph = ({
     lowerBand: lowerband[index],
   }));
 
+  const y = data.map((y) => y);
+  const yAxisRange = y.sort(function (a, b) {
+    return a - b;
+  });
+  const yMin = yAxisRange[0];
+  const yMax = yAxisRange[yValues.length - 1];
+
   const rsiData = xValues.map((item, index) => ({
     name: item,
     rsiValues: rsi[index],
@@ -66,57 +74,12 @@ const Graph = ({
   const macdMin = mdAxisRange[0];
   const macdMax = mdAxisRange[macd.length - 1];
 
-  const y = data.map((y) => y);
-  const yAxisRange = y.sort(function (a, b) {
-    return a - b;
-  });
-  const yMin = yAxisRange[0];
-  const yMax = yAxisRange[yValues.length - 1];
-
   return (
     <>
       <h3 style={{ display: "flex", justifyContent: "center" }}>
         Stock Chart for {String(stock).toUpperCase()}
       </h3>
-      <div style={{ marginBottom: "2vh", marginLeft: "3vw" }}>
-        <button
-          className="ui tiny button"
-          onClick={() => timeInterval(390, "1min")}
-        >
-          1d
-        </button>
-        <button
-          className="ui tiny button"
-          onClick={() => timeInterval(390, "5min")}
-        >
-          1w
-        </button>
-        <button
-          className="ui tiny button"
-          onClick={() => timeInterval(21, "1day")}
-        >
-          1m
-        </button>
-        <button
-          className="ui tiny button"
-          onClick={() => timeInterval(63, "1day")}
-        >
-          3m
-        </button>
-        <button
-          className="ui tiny button"
-          onClick={() => timeInterval(126, "1day")}
-        >
-          6m
-        </button>
-        <button
-          className="ui tiny button"
-          onClick={() => timeInterval(253, "1day")}
-        >
-          1y
-        </button>
-      </div>
-
+      <TimeInterval timeInterval={timeInterval} />
       <ComposedChart width={1500} height={700} data={data}>
         {upperband.length !== 0 ? (
           <>
