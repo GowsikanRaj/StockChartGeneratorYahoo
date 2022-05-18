@@ -6,9 +6,9 @@ class SearchBar extends Component {
   render() {
     const { stock, changeStock } = this.props;
     return (
-      <div className="ui form" style={{ marginLeft: "2vw" }}>
+      <div className="ui form" style={{ marginLeft: "3vw" }}>
         <div className="fields">
-          <div className="thirteen wide field">
+          <div className="eleven wide field">
             <label>Enter Stock Name </label>
             <input
               value={stock}
@@ -18,10 +18,10 @@ class SearchBar extends Component {
               style={{ marginLeft: "2px", width: "10vw" }}
             />
           </div>
-          <div className="three wide field">
+          <div className="five wide field">
             <button
               className="positive ui small button"
-              style={{ marginTop: "2vh" }}
+              style={{ marginTop: "2vh", marginLeft: "3vw" }}
               onClick={(e) =>
                 this.props.addToWatchlist(String(stock).toUpperCase())
               }

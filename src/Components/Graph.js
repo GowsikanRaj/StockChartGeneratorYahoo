@@ -187,7 +187,7 @@ const Graph = ({
       <h3 style={{ display: "flex", justifyContent: "center" }}>
         Stock Chart for {String(stock).toUpperCase()}
       </h3>
-      <div style={{ marginBottom: "2vh" }}>
+      <div style={{ marginBottom: "2vh", marginLeft: "3vw" }}>
         <button
           className="ui tiny button"
           onClick={() => timeInterval(390, "1min")}
@@ -226,7 +226,7 @@ const Graph = ({
         </button>
       </div>
 
-      <ComposedChart width={1500} height={750} data={data}>
+      <ComposedChart width={1500} height={700} data={data}>
         {upperband.length !== 0 ? (
           <>
             <Area
@@ -424,7 +424,7 @@ const Graph = ({
       ) : (
         ""
       )}
-      <div className="row" style={{ marginTop: "5vh" }}>
+      <div className="row" style={{ marginTop: "5vh", marginLeft: "3vw" }}>
         {openTwentyOneEMA ? (
           <button className="negative ui button" onClick={() => removeema(21)}>
             Remove 21 EMA
