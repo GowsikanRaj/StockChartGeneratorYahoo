@@ -23,6 +23,7 @@ const App = () => {
   const [RSI, setRSI] = useState([]);
   const [macd, setMacd] = useState([]);
   const [macdsignal, setMacdsignal] = useState([]);
+  const [macdhistogram, setMacdhistogram] = useState([]);
   const [upperBB, setUpperBB] = useState([]);
   const [middleBB, setMiddleBB] = useState([]);
   const [lowerBB, setLowerBB] = useState([]);
@@ -254,8 +255,12 @@ const App = () => {
       let signal = data["values"].map((item) =>
         Number(item["macd_signal"]).toFixed(2)
       );
+      let hist = data["values"].map((item) =>
+        Number(item["macd_hist"]).toFixed(2)
+      );
       setMacd(macD.reverse());
       setMacdsignal(signal.reverse());
+      setMacdhistogram(hist.reverse());
     }
   };
 
@@ -336,6 +341,7 @@ const App = () => {
               rsi={RSI}
               macd={macd}
               macdSignal={macdsignal}
+              macdHistogram={macdhistogram}
               upperband={upperBB}
               middleband={middleBB}
               lowerband={lowerBB}
