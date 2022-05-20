@@ -318,7 +318,7 @@ const App = () => {
         <h1 className="ui block header">Stock Chart Generator</h1>
       </div>
 
-      <div className="ui grid" style={{ margin: "10px" }}>
+      <div className="ui grid" style={{ margin: "10px", width: "100%" }}>
         <div className="sixteen wide stretched column">
           {error ? <Snackbar closeMessage={closeMessage} /> : ""}
         </div>

@@ -225,7 +225,7 @@ const Graph = ({
         <ResponsiveContainer width="100%" height={150}>
           <LineChart
             width={1500}
-            height={150}
+            height={200}
             data={rsiData}
             margin={{
               top: 20,
@@ -262,7 +262,7 @@ const Graph = ({
       )}
 
       {macd.length !== 0 ? (
-        <ResponsiveContainer width="100%" height={150}>
+        <ResponsiveContainer width="100%" height={200}>
           <ComposedChart
             data={macdData}
             margin={{
