@@ -50,13 +50,6 @@ const Graph = ({
     lowerBand: lowerband[index],
   }));
 
-  const y = data.map((y) => y);
-  const yAxisRange = y.sort(function (a, b) {
-    return a - b;
-  });
-  const yMin = yAxisRange[0];
-  const yMax = yAxisRange[yValues.length - 1];
-
   const rsiData = xValues.map((item, index) => ({
     name: item,
     rsiValues: rsi[index],
@@ -216,7 +209,7 @@ const Graph = ({
           ) : (
             ""
           )}
-          <YAxis type="number" domain={[yMin, yMax]} />
+          <YAxis type="number" />
           <Legend />
         </ComposedChart>
       </ResponsiveContainer>

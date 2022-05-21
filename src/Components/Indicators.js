@@ -109,99 +109,102 @@ const Indicators = ({
     setOpenBB(false);
     removeBollingerBands();
   };
+
   return (
-    <div className="row" style={{ marginTop: "5vh", marginLeft: "3vw" }}>
-      {openTwentyOneEMA ? (
-        <button className="negative ui button" onClick={() => removeema(21)}>
-          Remove 21 EMA
-        </button>
-      ) : (
-        <button className="positive ui button" onClick={() => addema(21)}>
-          Add 21 EMA
-        </button>
-      )}
-      {openFiftyEMA ? (
-        <button className="negative ui button" onClick={() => removeema(50)}>
-          Remove 50 EMA
-        </button>
-      ) : (
-        <button className="positive ui button" onClick={() => addema(50)}>
-          Add 50 EMA
-        </button>
-      )}
-      {openHundredEMA ? (
-        <button className="negative ui button" onClick={() => removeema(100)}>
-          Remove 100 EMA
-        </button>
-      ) : (
-        <button className="positive ui button" onClick={() => addema(100)}>
-          Add 100 EMA
-        </button>
-      )}
-      {openTwoHundredEMA ? (
-        <button className="negative ui button" onClick={() => removeema(200)}>
-          Remove 200 EMA
-        </button>
-      ) : (
-        <button className="positive ui button" onClick={() => addema(200)}>
-          Add 200 EMA
-        </button>
-      )}
-      {openFiftySMA ? (
-        <button className="negative ui button" onClick={() => removesma(50)}>
-          Remove 50 SMA
-        </button>
-      ) : (
-        <button className="positive ui button" onClick={() => addsma(50)}>
-          Add 50 SMA
-        </button>
-      )}
-      {openHundredSMA ? (
-        <button className="negative ui button" onClick={() => removesma(100)}>
-          Remove 100 SMA
-        </button>
-      ) : (
-        <button className="positive ui button" onClick={() => addsma(100)}>
-          Add 100 SMA
-        </button>
-      )}
-      {openTwoHundredSMA ? (
-        <button className="negative ui button" onClick={() => removesma(200)}>
-          Remove 200 SMA
-        </button>
-      ) : (
-        <button className="positive ui button" onClick={() => addsma(200)}>
-          Add 200 SMA
-        </button>
-      )}
-      {openRSI ? (
-        <button className="negative ui button" onClick={() => removersi()}>
-          Remove RSI
-        </button>
-      ) : (
-        <button className="positive ui button" onClick={() => addrsi()}>
-          Add RSI
-        </button>
-      )}
-      {openMACD ? (
-        <button className="negative ui button" onClick={() => removemacd()}>
-          Remove MACD
-        </button>
-      ) : (
-        <button className="positive ui button" onClick={() => addmacd()}>
-          Add MACD
-        </button>
-      )}
-      {openBB ? (
-        <button className="negative ui button" onClick={() => removebb()}>
-          Remove Bollinger Bands
-        </button>
-      ) : (
-        <button className="positive ui button" onClick={() => addbb()}>
-          Add Bollinger Bands
-        </button>
-      )}
-    </div>
+    <>
+      <div className="row" style={{ marginTop: "5vh", marginLeft: "3vw" }}>
+        {openTwentyOneEMA ? (
+          <button className="negative ui button" onClick={() => removeema(21)}>
+            Remove 21 EMA
+          </button>
+        ) : (
+          <button className="positive ui button" onClick={() => addema(21)}>
+            Add 21 EMA
+          </button>
+        )}
+        {openFiftyEMA ? (
+          <button className="negative ui button" onClick={() => removeema(50)}>
+            Remove 50 EMA
+          </button>
+        ) : (
+          <button className="positive ui button" onClick={() => addema(50)}>
+            Add 50 EMA
+          </button>
+        )}
+        {openHundredEMA ? (
+          <button className="negative ui button" onClick={() => removeema(100)}>
+            Remove 100 EMA
+          </button>
+        ) : (
+          <button className="positive ui button" onClick={() => addema(100)}>
+            Add 100 EMA
+          </button>
+        )}
+        {openTwoHundredEMA ? (
+          <button className="negative ui button" onClick={() => removeema(200)}>
+            Remove 200 EMA
+          </button>
+        ) : (
+          <button className="positive ui button" onClick={() => addema(200)}>
+            Add 200 EMA
+          </button>
+        )}
+        {openFiftySMA ? (
+          <button className="negative ui button" onClick={() => removesma(50)}>
+            Remove 50 SMA
+          </button>
+        ) : (
+          <button className="positive ui button" onClick={() => addsma(50)}>
+            Add 50 SMA
+          </button>
+        )}
+        {openHundredSMA ? (
+          <button className="negative ui button" onClick={() => removesma(100)}>
+            Remove 100 SMA
+          </button>
+        ) : (
+          <button className="positive ui button" onClick={() => addsma(100)}>
+            Add 100 SMA
+          </button>
+        )}
+        {openTwoHundredSMA ? (
+          <button className="negative ui button" onClick={() => removesma(200)}>
+            Remove 200 SMA
+          </button>
+        ) : (
+          <button className="positive ui button" onClick={() => addsma(200)}>
+            Add 200 SMA
+          </button>
+        )}
+        {openRSI ? (
+          <button className="negative ui button" onClick={() => removersi()}>
+            Remove RSI
+          </button>
+        ) : (
+          <button className="positive ui button" onClick={() => addrsi()}>
+            Add RSI
+          </button>
+        )}
+        {openMACD ? (
+          <button className="negative ui button" onClick={() => removemacd()}>
+            Remove MACD
+          </button>
+        ) : (
+          <button className="positive ui button" onClick={() => addmacd()}>
+            Add MACD
+          </button>
+        )}
+        {openBB ? (
+          <button className="negative ui button" onClick={() => removebb()}>
+            Remove Bollinger Bands
+          </button>
+        ) : (
+          <button className="positive ui button" onClick={() => addbb()}>
+            Add Bollinger Bands
+          </button>
+        )}
+      </div>
+    </>
   );
 };
 
