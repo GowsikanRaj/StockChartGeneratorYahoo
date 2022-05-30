@@ -3,9 +3,12 @@ import axios from "axios";
 class SearchBar extends Component {
   addToWatchlist = async (stock) => {
     console.log(stock);
-    await axios.post("http://localhost:3001/addStock", {
-      Stock: stock,
-    });
+    await axios.post(
+      "https://stockchartgeneratortwelvedata.herokuapp.com/addStock",
+      {
+        Stock: stock,
+      }
+    );
   };
   render() {
     const { stock, changeStock } = this.props;

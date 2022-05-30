@@ -6,7 +6,9 @@ const Watchlist = ({ changeStock }) => {
 
   useEffect(() => {
     const getData = async () => {
-      const { data } = await axios.get("http://localhost:3001/getWatchlist");
+      const { data } = await axios.get(
+        "https://stockchartgeneratortwelvedata.herokuapp.com/getWatchlist"
+      );
       setWatchlist(data);
     };
 
@@ -14,9 +16,12 @@ const Watchlist = ({ changeStock }) => {
   }, [watchlist]);
 
   const removeFromWatchlist = async (id) => {
-    await axios.post("http://localhost:3001/deleteStock", {
-      id: id,
-    });
+    await axios.post(
+      "https://stockchartgeneratortwelvedata.herokuapp.com/deleteStock",
+      {
+        id: id,
+      }
+    );
   };
 
   return (
