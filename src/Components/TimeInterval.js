@@ -7,37 +7,37 @@ const TimeInterval = ({ timeInterval }) => {
         className="ui tiny button"
         onClick={() => timeInterval(390, "1min")}
       >
-        1d
+        1D
       </button>
       <button
         className="ui tiny button"
         onClick={() => timeInterval(390, "5min")}
       >
-        1w
+        1W
       </button>
       <button
         className="ui tiny button"
         onClick={() => timeInterval(21, "1day")}
       >
-        1m
+        1M
       </button>
       <button
         className="ui tiny button"
         onClick={() => timeInterval(63, "1day")}
       >
-        3m
+        3M
       </button>
       <button
         className="ui tiny button"
         onClick={() => timeInterval(126, "1day")}
       >
-        6m
+        6M
       </button>
       <button
         className="ui tiny button"
         onClick={() => timeInterval(253, "1day")}
       >
-        1y
+        1Y
       </button>
     </div>
   );
