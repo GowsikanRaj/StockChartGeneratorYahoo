@@ -1,29 +1,6 @@
-import axios from "axios";
-import React, { useState, useEffect } from "react";
+import React from "react";
 
-const Watchlist = ({ changeStock }) => {
-  const [watchlist, setWatchlist] = useState([]);
-
-  useEffect(() => {
-    const getData = async () => {
-      const { data } = await axios.get(
-        "https://stock-chart-generator-server.vercel.app/getWatchlist"
-      );
-      setWatchlist(data);
-    };
-
-    getData();
-  }, [watchlist]);
-
-  const removeFromWatchlist = async (id) => {
-    await axios.post(
-      "https://stock-chart-generator-server.vercel.app/deleteStock",
-      {
-        id: id,
-      }
-    );
-  };
-
+const Watchlist = ({ changeStock, watchlist, removeFromWatchlist }) => {
   return (
     <table className="ui celled table">
       <thead>

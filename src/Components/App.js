@@ -28,10 +28,12 @@ const App = () => {
   const [middleBB, setMiddleBB] = useState([]);
   const [lowerBB, setLowerBB] = useState([]);
   const [error, setError] = useState(false);
+  const [watchlist, setWatchlist] = useState([]);
 
   useEffect(() => {
     if (stock && !xValues.length) {
       search();
+      getWatchlist();
       if (twentyOneEMA.length !== 0) {
         getEMA(21);
       }
@@ -66,6 +68,7 @@ const App = () => {
       const timeoutId = setTimeout(() => {
         if (stock) {
           search();
+          getWatchlist();
           if (twentyOneEMA.length !== 0) {
             getEMA(21);
           }
@@ -104,6 +107,25 @@ const App = () => {
       };
     }
   }, [stock, range, interval]);
+
+  const getWatchlist = async () => {
+    const { data } = await axios.get("http://localhost:3001/getWatchlist");
+    setWatchlist(data);
+  };
+
+  const removeFromWatchlist = async (id) => {
+    await axios.post("http://localhost:3001/deleteStock", {
+      id: id,
+    });
+    getWatchlist();
+  };
+
+  const addToWatchlist = async (stock) => {
+    await axios.post("http://localhost:3001/addStock", {
+      Stock: stock,
+    });
+    getWatchlist();
+  };
 
   const search = async () => {
     const { data } = await axios.get(`https://api.twelvedata.com/time_series`, {
@@ -324,7 +346,11 @@ const App = () => {
         </div>
 
         <div className="fourteen wide stretched centered column">
-          <SearchBar stock={stock} changeStock={changeStock} />
+          <SearchBar
+            stock={stock}
+            changeStock={changeStock}
+            addToWatchlist={addToWatchlist}
+          />
           <div className="ui center aligned field">
             <Graph
               stock={stock}
@@ -361,7 +387,11 @@ const App = () => {
           </div>
         </div>
         <div className="two wide column">
-          <Watchlist changeStock={changeStock} />
+          <Watchlist
+            changeStock={changeStock}
+            watchlist={watchlist}
+            removeFromWatchlist={removeFromWatchlist}
+          />
         </div>
       </div>
     </>
