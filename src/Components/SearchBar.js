@@ -4,7 +4,7 @@ class SearchBar extends Component {
   addToWatchlist = async (stock) => {
     console.log(stock);
     await axios.post(
-      "https://stockchartgeneratortwelvedata.herokuapp.com/addStock",
+      "https://stock-chart-generator-server.vercel.app/addStock",
       {
         Stock: stock,
       }

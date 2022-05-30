@@ -7,7 +7,7 @@ const Watchlist = ({ changeStock }) => {
   useEffect(() => {
     const getData = async () => {
       const { data } = await axios.get(
-        "https://stockchartgeneratortwelvedata.herokuapp.com/"
+        "https://stock-chart-generator-server.vercel.app/getWatchlist"
       );
       setWatchlist(data);
     };
@@ -17,7 +17,7 @@ const Watchlist = ({ changeStock }) => {
 
   const removeFromWatchlist = async (id) => {
     await axios.post(
-      "https://stockchartgeneratortwelvedata.herokuapp.com/deleteStock",
+      "https://stock-chart-generator-server.vercel.app/deleteStock",
       {
         id: id,
       }
