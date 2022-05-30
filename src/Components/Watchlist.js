@@ -7,7 +7,7 @@ const Watchlist = ({ changeStock }) => {
   useEffect(() => {
     const getData = async () => {
       const { data } = await axios.get(
-        "https://stockchartgeneratortwelvedata.herokuapp.com/getWatchlist"
+        "https://stockchartgeneratortwelvedata.herokuapp.com/"
       );
       setWatchlist(data);
     };
