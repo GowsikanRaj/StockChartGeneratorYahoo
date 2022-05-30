@@ -1,53 +1,55 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { getWatchlist, removeFromWatchlist } from "../Action";
+import axios from "axios";
+import React, { useState, useEffect } from "react";
 
-class Watchlist extends Component {
-  componentDidMount() {
-    this.props.getWatchlist();
-  }
-  render() {
-    const { changeStock } = this.props;
-    return (
-      <table className="ui celled table">
-        <thead>
-          <tr>
-            <th style={{ display: "flex", justifyContent: "center" }}>
-              Stock Watchlist
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {this.props.watchlist.map((item) => (
-            <tr>
-              <td>
-                <button
-                  className="ui tiny button"
-                  onClick={() => changeStock(item.Stock)}
-                >
-                  {item.Stock}
-                </button>
-                <button
-                  className="negative ui right floated tiny button"
-                  onClick={() => this.props.removeFromWatchlist(item.id)}
-                >
-                  Remove
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    );
-  }
-}
+const Watchlist = ({ changeStock }) => {
+  const [watchlist, setWatchlist] = useState([]);
 
-const mapStateToProps = (state) => {
-  return {
-    watchlist: Object.values(state.watchlist),
+  useEffect(() => {
+    const getData = async () => {
+      const { data } = await axios.get("http://localhost:3001/getWatchlist");
+      setWatchlist(data);
+    };
+
+    getData();
+  }, [watchlist]);
+
+  const removeFromWatchlist = async (id) => {
+    await axios.post("http://localhost:3001/deleteStock", {
+      id: id,
+    });
   };
+
+  return (
+    <table className="ui celled table">
+      <thead>
+        <tr>
+          <th style={{ display: "flex", justifyContent: "center" }}>
+            Stock Watchlist
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {watchlist.map((item) => (
+          <tr>
+            <td>
+              <button
+                className="ui tiny button"
+                onClick={() => changeStock(item.Stock)}
+              >
+                {item.Stock}
+              </button>
+              <button
+                className="negative ui right floated tiny button"
+                onClick={() => removeFromWatchlist(item.id)}
+              >
+                Remove
+              </button>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
 };
 
-export default connect(mapStateToProps, { getWatchlist, removeFromWatchlist })(
-  Watchlist
-);
+export default Watchlist;

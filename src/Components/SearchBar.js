@@ -1,8 +1,12 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import { addToWatchlist } from "../Action";
-
+import axios from "axios";
 class SearchBar extends Component {
+  addToWatchlist = async (stock) => {
+    console.log(stock);
+    await axios.post("http://localhost:3001/addStock", {
+      Stock: stock,
+    });
+  };
   render() {
     const { stock, changeStock } = this.props;
     return (
@@ -22,9 +26,7 @@ class SearchBar extends Component {
             <button
               className="positive ui small button"
               style={{ marginTop: "2vh", marginRight: "0vw" }}
-              onClick={(e) =>
-                this.props.addToWatchlist(String(stock).toUpperCase())
-              }
+              onClick={(e) => this.addToWatchlist(String(stock).toUpperCase())}
             >
               Add to watchlist
             </button>
@@ -35,4 +37,4 @@ class SearchBar extends Component {
   }
 }
 
-export default connect(null, { addToWatchlist })(SearchBar);
+export default SearchBar;
