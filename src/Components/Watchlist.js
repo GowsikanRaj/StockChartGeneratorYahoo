@@ -5,7 +5,13 @@ const Watchlist = ({ changeStock, watchlist, removeFromWatchlist }) => {
     <table className="ui celled table">
       <thead>
         <tr>
-          <th style={{ display: "flex", justifyContent: "center" }}>
+          <th
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              fontFamily: "sans-serif",
+            }}
+          >
             Stock Watchlist
           </th>
         </tr>
