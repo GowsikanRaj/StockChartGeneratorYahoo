@@ -109,21 +109,29 @@ const App = () => {
   }, [stock, range, interval]);
 
   const getWatchlist = async () => {
-    const { data } = await axios.get("http://localhost:3001/getWatchlist");
+    const { data } = await axios.get(
+      "https://stockchartgeneratortwelvedata.herokuapp.com/getWatchlist"
+    );
     setWatchlist(data);
   };
 
   const removeFromWatchlist = async (id) => {
-    await axios.post("http://localhost:3001/deleteStock", {
-      id: id,
-    });
+    await axios.post(
+      "https://stockchartgeneratortwelvedata.herokuapp.com/deleteStock",
+      {
+        id: id,
+      }
+    );
     getWatchlist();
   };
 
   const addToWatchlist = async (stock) => {
-    await axios.post("http://localhost:3001/addStock", {
-      Stock: stock,
-    });
+    await axios.post(
+      "https://stockchartgeneratortwelvedata.herokuapp.com/addStock",
+      {
+        Stock: stock,
+      }
+    );
     getWatchlist();
   };
 
