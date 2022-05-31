@@ -110,7 +110,7 @@ const App = () => {
 
   const getWatchlist = async () => {
     const { data } = await axios.get(
-      "https://stock-chart-generator-server.vercel.app/getWatchlist"
+      "https://stock-chart-generator-server.vercel.app/"
     );
     setWatchlist(data);
   };
