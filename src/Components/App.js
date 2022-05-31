@@ -110,7 +110,7 @@ const App = () => {
 
   const getWatchlist = async () => {
     const { data } = await axios.get(
-      "https://stockchartgeneratortwelvedata.herokuapp.com/"
+      "https://stockchartgeneratortwelvedata.herokuapp.com/getWatchlist"
     );
     setWatchlist(data);
   };
