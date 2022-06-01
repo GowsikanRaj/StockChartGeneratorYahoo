@@ -110,14 +110,14 @@ const App = () => {
 
   const getWatchlist = async () => {
     const { data } = await axios.get(
-      "https://stockchartgeneratortwelvedata.herokuapp.com/getWatchlist"
+      "https://stock-chart-generator-server.vercel.app/getWatchlist"
     );
     setWatchlist(data);
   };
 
   const removeFromWatchlist = async (id) => {
     await axios.post(
-      "https://stockchartgeneratortwelvedata.herokuapp.com/deleteStock",
+      "https://stock-chart-generator-server.vercel.app/deleteStock",
       {
         id: id,
       }
@@ -127,7 +127,7 @@ const App = () => {
 
   const addToWatchlist = async (stock) => {
     await axios.post(
-      "https://stockchartgeneratortwelvedata.herokuapp.com/addStock",
+      "https://stock-chart-generator-server.vercel.app/addStock",
       {
         Stock: stock,
       }
